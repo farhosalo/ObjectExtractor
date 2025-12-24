@@ -62,7 +62,7 @@ def main():
     )
     args = parser.parse_args()
 
-    extractor = ObjectExtractorGDino(
+    extractor = ObjectExtractorOwlVit(
         device=args.device, outputPath="ObjectExtractorOutput", classes=args.classes
     )
     extractor.setMinimumObjectSize(24, 24)
