@@ -1,0 +1,28 @@
+__pycache__/
+Signs*/*
+input*/*
+output*/*
+DashCam*
+temp*
+Weights*
+.DS_Store
+# Ignore Python cache files
+*.py[cod]
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints
+/Logs
+/tf_logs
+.ipynb_checkpoints/
+.vscode/
+my_*
+.DS_Store
+*.bak
+*.bak.*
+*.ckpt
+*.old
+*.pyc
+checkpoint
+haarcascade_frontalface_default.xml
+*.h5
+ClassNames.txt
+/__pycache__
