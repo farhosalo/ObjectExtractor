@@ -33,6 +33,17 @@ The user can choose between one of the following underlying technologies:
    pip install -r requirements.txt
    ```
 
+## Configuration (For Expert Users)
+
+Please don't modifying the configuration unless you have extensive experience in creating such models.
+
+The configuration is stored in a Python file named Configuration.py located in the project root directory.
+
+- **“OUTPUT_PATH“:** The path to the directory where the extracted images will be saved.
+- **"MINIMUM_HEIGHT":** Minimum height of the object to be extracted
+- **"MINIMUM_WIDTH":** Minimum width of the object to be extracted
+- **"UNDERLYING_MODEL":** Underlying model to use for object extraction. Supported models: "OwlVit", "GroundingDINO"
+
 ## Usage
 
 To use the project, run the `main.py`.

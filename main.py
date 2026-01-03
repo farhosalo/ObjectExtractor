@@ -6,6 +6,7 @@ import os
 from ObjectExtractor.ObjectExtractorGDino import ObjectExtractorGDino
 from ObjectExtractor.ObjectExtractorOwlVit import ObjectExtractorOwlVit
 from ObjectExtractor import AbstractObjectExtractor
+import Configuration
 
 
 class SupportedFileTypes(Enum):
@@ -62,10 +63,43 @@ def main():
     )
     args = parser.parse_args()
 
-    extractor = ObjectExtractorOwlVit(
-        device=args.device, outputPath="ObjectExtractorOutput", classes=args.classes
-    )
-    extractor.setMinimumObjectSize(24, 24)
+    minimumHeight = Configuration.config.get("MINIMUM_HEIGHT")
+    minimumWidth = Configuration.config.get("MINIMUM_WIDTH")
+    outputPath = Configuration.config.get("OUTPUT_PATH")
+    underlyingModel = Configuration.config.get("UNDERLYING_MODEL")
+
+    if minimumHeight in [0, None] or minimumHeight < 0:
+        minimumHeight = 24
+    if minimumWidth in [0, None] or minimumWidth < 0:
+        minimumWidth = 24
+    if outputPath in [None, ""]:
+        outputPath = "Output"
+
+    if underlyingModel is None or underlyingModel not in Configuration.UNDERLYING_MODEL:
+        raise ValueError(
+            f"Underlying model must be one of {Configuration.UNDERLYING_MODEL}, got {underlyingModel}"
+        )
+
+    extractor: AbstractObjectExtractor
+
+    if underlyingModel == "GroundingDINO":
+        extractor = ObjectExtractorGDino(
+            device=args.device,
+            outputPath=outputPath,
+            classes=args.classes,
+        )
+    elif underlyingModel == "OwlVit":
+        extractor = ObjectExtractorOwlVit(
+            device=args.device,
+            outputPath=outputPath,
+            classes=args.classes,
+        )
+    else:
+        raise ValueError(
+            f"Underlying model must be one of {Configuration.UNDERLYING_MODEL}, got {appConfig['UNDERLYING_MODEL']}"
+        )
+    print("Minimum object size: ", minimumWidth, "x", minimumHeight)
+    extractor.setMinimumObjectSize(minimumWidth, minimumHeight)
 
     input = os.fsencode(args.input)
     if not os.path.exists(input):
