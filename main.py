@@ -7,6 +7,9 @@ from ObjectExtractor.ObjectExtractorGDino import ObjectExtractorGDino
 from ObjectExtractor.ObjectExtractorOwlVit import ObjectExtractorOwlVit
 from ObjectExtractor import AbstractObjectExtractor
 import Configuration
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 class SupportedFileTypes(Enum):
@@ -34,7 +37,7 @@ def extract(fileName: str, extractor: AbstractObjectExtractor):
     elif fileType == SupportedFileTypes.IMAGE:
         extractor.extractFromImage(fileName)
     else:
-        print("Input file format is not supported")
+        logging.error("Input file format is not supported")
 
 
 def main():
@@ -98,12 +101,12 @@ def main():
         raise ValueError(
             f"Underlying model must be one of {Configuration.UNDERLYING_MODEL}, got {appConfig['UNDERLYING_MODEL']}"
         )
-    print("Minimum object size: ", minimumWidth, "x", minimumHeight)
+    logging.info(f"Minimum object size: {minimumWidth} x {minimumHeight}")
     extractor.setMinimumObjectSize(minimumWidth, minimumHeight)
 
     input = os.fsencode(args.input)
     if not os.path.exists(input):
-        print("Input path does not exist")
+        logging.fatal("Input path does not exist")
         return
 
     if os.path.isfile(input):

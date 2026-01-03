@@ -1,7 +1,11 @@
+import logging.config
 import os
 from abc import ABC, abstractmethod
 import re
 import cv2
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 class AbstractObjectExtractor(ABC):
@@ -42,7 +46,7 @@ class AbstractObjectExtractor(ABC):
             frameCount += 1
 
         videoCapture.release()
-        print("Processing " + VideoFile + " completed.")
+        logging.info("Processing " + VideoFile + " completed.")
 
     @abstractmethod
     def _extractObjectsFromFrame(self):
