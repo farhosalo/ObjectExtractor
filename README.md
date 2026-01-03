@@ -63,14 +63,6 @@ python main.py --device mps --input <path/to/video.mp4> --classes "traffic sign"
 
 Contributions are welcome! If you find any bugs or have ideas for new features, feel free to open an issue or submit a pull request.
 
-### How to Contribute
-
-1. Fork the repository
-2. Create a new branch: `git checkout -b my-feature`
-3. Make your changes and commit them: `git commit -m 'Add new feature'`
-4. Push the branch: `git push origin my-feature`
-5. Open a pull request
-
 ## License
 
 This project is licensed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
