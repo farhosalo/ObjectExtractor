@@ -19,7 +19,13 @@ class SupportedFileTypes(Enum):
 
 
 def GetFileType(filename: str):
+    if filename is None or not os.path.isfile(filename):
+        return SupportedFileTypes.UNKNOWN
+
     mime = filetype.guess_mime(filename)
+    if mime is None:
+        return SupportedFileTypes.UNKNOWN
+
     if mime is not None:
         if mime.startswith("image/"):
             return SupportedFileTypes.IMAGE
