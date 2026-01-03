@@ -72,21 +72,35 @@ def main():
     )
     args = parser.parse_args()
 
-    minimumHeight = Configuration.config.get("MINIMUM_HEIGHT")
-    minimumWidth = Configuration.config.get("MINIMUM_WIDTH")
-    outputPath = Configuration.config.get("OUTPUT_PATH")
     underlyingModel = Configuration.config.get("UNDERLYING_MODEL")
-
-    if minimumHeight in [0, None] or minimumHeight < 0:
-        minimumHeight = 24
-    if minimumWidth in [0, None] or minimumWidth < 0:
-        minimumWidth = 24
-    if outputPath in [None, ""]:
-        outputPath = "Output"
-
     if underlyingModel is None or underlyingModel not in Configuration.UNDERLYING_MODEL:
         raise ValueError(
             f"Underlying model must be one of {Configuration.UNDERLYING_MODEL}, got {underlyingModel}"
+        )
+
+    minimumHeight = Configuration.config.get("MINIMUM_HEIGHT")
+    if (
+        minimumHeight is None
+        or not isinstance(minimumHeight, int)
+        or minimumHeight <= 0
+    ):
+        minimumHeight = 24
+        logging.warning(
+            f"Invalid minimum height value in configuration, defaulting to {minimumHeight}"
+        )
+
+    minimumWidth = Configuration.config.get("MINIMUM_WIDTH")
+    if minimumWidth is None or not isinstance(minimumWidth, int) or minimumWidth <= 0:
+        minimumWidth = 24
+        logging.warning(
+            f"Invalid minimum width value in configuration, defaulting to {minimumWidth}"
+        )
+
+    outputPath = Configuration.config.get("OUTPUT_PATH")
+    if outputPath in [None, ""] or not isinstance(outputPath, str):
+        outputPath = "Output"
+        logging.warning(
+            f"Invalid output path in configuration, defaulting to {outputPath}"
         )
 
     extractor: AbstractObjectExtractor
