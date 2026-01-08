@@ -25,7 +25,8 @@ class AbstractObjectExtractor(ABC):
 
     def extractFromImage(self, imagePath):
         frame = cv2.imread(imagePath)
-        self._extractObjectsFromFrame(frame)
+        rgbFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        self._extractObjectsFromFrame(rgbFrame)
 
     def extractFromVideo(self, VideoFile):
         videoCapture = cv2.VideoCapture(VideoFile)
@@ -40,7 +41,8 @@ class AbstractObjectExtractor(ABC):
                 break
 
             if frameCount % int(videoFPS / imagesPerSeconds) == 0:
-                self._extractObjectsFromFrame(image)
+                rgbFrame = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+                self._extractObjectsFromFrame(rgbFrame)
             frameCount += 1
 
         videoCapture.release()
@@ -53,7 +55,10 @@ class AbstractObjectExtractor(ABC):
     def _saveExtractedObject(self, object):
         try:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
-            cv2.imwrite(os.path.join(self.__OutputPath, f"{timestamp}.jpg"), object)
+            cv2.imwrite(
+                os.path.join(self.__OutputPath, f"{timestamp}.jpg"),
+                cv2.cvtColor(object, cv2.COLOR_RGB2BGR),
+            )
             self.__FileIndex += 1
         except:
             pass
