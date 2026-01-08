@@ -8,7 +8,7 @@ from datetime import datetime
 
 class AbstractObjectExtractor(ABC):
     _Model = None
-    _MinimumSignSize = (44, 44)
+    _MinimalExtractedImagesSize = (44, 44)
 
     def __init__(self, device, outputPath, classes=[str]):
         self.__OutputPath = outputPath
@@ -21,7 +21,7 @@ class AbstractObjectExtractor(ABC):
         self.__FileIndex = 0
 
     def setMinimumObjectSize(self, width, height):
-        self._MinimumSignSize = (width, height)
+        self._MinimalExtractedImagesSize = (width, height)
 
     def extractFromImage(self, imagePath):
         frame = cv2.imread(imagePath)

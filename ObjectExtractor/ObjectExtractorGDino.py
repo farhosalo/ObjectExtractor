@@ -21,7 +21,7 @@ class ObjectExtractorGDino(AbstractObjectExtractor):
     def __downloadModel(self):
         if not os.path.exists(self.__WeightDir):
             os.makedirs(self.__WeightDir)
-            
+
         for url in [self.__GDinoModelUrl, self.__GDinoConfigUrl]:
             fileName = url.rsplit("/", 1)[-1]
             completeFileName = os.path.join(self.__WeightDir, fileName)
@@ -55,7 +55,7 @@ class ObjectExtractorGDino(AbstractObjectExtractor):
         for detected in detections:
             bbox = detected[0].astype(int)
             # Sign size should be greater than __MinimumSignSize pixels
-            if (bbox[3] - bbox[1] > self._MinimumSignSize[0]) and (
-                bbox[2] - bbox[0] > self._MinimumSignSize[1]
+            if (bbox[3] - bbox[1] > self._MinimalExtractedImagesSize[0]) and (
+                bbox[2] - bbox[0] > self._MinimalExtractedImagesSize[1]
             ):
                 self._saveExtractedObject(frame[bbox[1] : bbox[3], bbox[0] : bbox[2]])

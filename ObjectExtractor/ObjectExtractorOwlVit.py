@@ -8,9 +8,8 @@ from .AbstractObjectExtractor import AbstractObjectExtractor
 
 class ObjectExtractorOwlVit(AbstractObjectExtractor):
     __SCORE_THRESHOLD = 0.15  # keep detections with score >= this
-    __TextLabels = [["traffic sign"]]
 
-    def __init__(self, device="cpu", outputPath="OwlVitSigns", classes=[str]):
+    def __init__(self, device="cpu", outputPath="OwlVitOut", classes=[str]):
         super().__init__(device, outputPath, classes)
         self.__DownloadModel()
 
@@ -43,19 +42,13 @@ class ObjectExtractorOwlVit(AbstractObjectExtractor):
         for r in results:
             r["text_labels"] = [self._ClassNames[int(i)] for i in r["labels"].tolist()]
 
-        # Retrieve predictions for the first image for the corresponding text queries
-        result = results[0]
-        boxes, scores, text_labels = (
-            result["boxes"],
-            result["scores"],
-            result["text_labels"],
-        )
-
-        for box, score, text_label in zip(boxes, scores, text_labels):
-            box = [round(i, 2) for i in box.tolist()]
-            if (box[3] - box[1] > self._MinimumSignSize[0]) and (
-                box[2] - box[0] > self._MinimumSignSize[1]
-            ):
-
-                x1, y1, x2, y2 = [int(v) for v in box]
-                self._saveExtractedObject(frame[y1:y2, x1:x2])
+            # Retrieve predictions for the first image for the corresponding text queries
+            for box in results[0]["boxes"]:
+                if not all(x > 0 for x in box):
+                    continue
+                box = [round(i, 2) for i in box.tolist()]
+                if (box[3] - box[1] > self._MinimalExtractedImagesSize[0]) and (
+                    box[2] - box[0] > self._MinimalExtractedImagesSize[1]
+                ):
+                    x1, y1, x2, y2 = [int(v) for v in box]
+                    self._saveExtractedObject(frame[y1:y2, x1:x2])
