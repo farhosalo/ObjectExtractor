@@ -59,10 +59,38 @@ Options:
 python main.py --device mps --input <path/to/video.mp4> --classes "traffic sign" "bus"
 ```
 
+This project does not include pre-trained model weights. At runtime, the following models are automatically downloaded from their official sources:
+
+1. GroundingDINO
+
+   - Project: GroundingDINO (IDEA-Research)
+   - Repository: <https://github.com/IDEA-Research/GroundingDINO>
+   - Code License: Apache License 2.0
+   - Model Weights: Downloaded from official GitHub releases
+
+   ⚠️ The GroundingDINO repository doesn’t explicitly mention a license for the released model weight files (.pth). Consequently, the weights won’t be **redistributed** with this project. Users are responsible for reviewing and adhering to the original terms, particularly for commercial use.
+
+2. OWL-ViT (google/owlvit-base-patch32)
+   - Provider: Google (via Hugging Face)
+   - Model Page: <https://huggingface.co/google/owlvit-base-patch32>
+   - License: Apache License 2.0
+
+   The Hugging Face transformers library automatically downloads the model.
+
 ## Contributing
 
 Contributions are welcome! If you find any bugs or have ideas for new features, feel free to open an issue or submit a pull request.
 
 ## License
 
-This project is licensed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
+- This project is licensed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0). See the [LICENSE](LICENSE) file for details.
+
+- Additional copyright and attribution notices can be found in the [NOTICE](NOTICE.md) file.
+
+- Third-Party Libraries and Licenses: This project uses several third-party libraries. See [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES.md) for a complete list of dependencies and their licenses.
+
+## Disclaimer
+
+- This repository exclusively contains original source code.
+- Pretrained model weights are downloaded directly from official sources.
+- Users are responsible for ensuring that they comply with the license terms when using third-party models.
