@@ -28,27 +28,20 @@ class ObjectExtractorOwlVit(AbstractObjectExtractor):
         height, width = frame.shape[:2]
         target_sizes = torch.tensor([(height, width)])
 
-        # Convert outputs (bounding boxes and class logits) to Pascal VOC format (xmin, ymin, xmax, ymax)
-        # results = processor.post_process_object_detection(
-        #     outputs=outputs, target_sizes=target_sizes, threshold=0.1, text_labels=text_labels
-        # )
-
-        # for older transformers versions (e.g., <= 4.39)
-        results = self.__Processor.post_process_object_detection(
+        results = self.__Processor.post_process_grounded_object_detection(
             outputs=outputs, target_sizes=target_sizes, threshold=self.__SCORE_THRESHOLD
         )
-        # set number of text labels for each image
-        # add text labels manually (same order as TEXT_PROMPTS)
+
         for r in results:
             r["text_labels"] = [self._ClassNames[int(i)] for i in r["labels"].tolist()]
 
-            # Retrieve predictions for the first image for the corresponding text queries
             for box in results[0]["boxes"]:
                 if not all(x > 0 for x in box):
                     continue
                 box = [round(i, 2) for i in box.tolist()]
-                if (box[3] - box[1] > self._MinimalExtractedImagesSize[0]) and (
-                    box[2] - box[0] > self._MinimalExtractedImagesSize[1]
+                x1, y1, x2, y2 = [int(v) for v in box]
+
+                if (x2 - x1 > self._MinimalExtractedImagesSize[0]) and (
+                    y2 - y1 > self._MinimalExtractedImagesSize[1]
                 ):
-                    x1, y1, x2, y2 = [int(v) for v in box]
                     self._saveExtractedObject(frame[y1:y2, x1:x2])
