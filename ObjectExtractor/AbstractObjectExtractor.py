@@ -1,6 +1,5 @@
 import os
 from abc import ABC, abstractmethod
-import re
 import cv2
 import logging
 from datetime import datetime

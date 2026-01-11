@@ -1,6 +1,4 @@
-import cv2
 import torch
-import os
 
 from transformers import OwlViTProcessor, OwlViTForObjectDetection
 from .AbstractObjectExtractor import AbstractObjectExtractor
